@@ -7,6 +7,7 @@ import {
   parseId,
   tableName,
   toRole,
+  actorKey, 
 } from "../shared/db";
 import { response } from "../shared/http";
 import { logRequest } from "../shared/request-logger";
@@ -20,7 +21,24 @@ export const handler = async (
   if (movieId === undefined) {
     return response(400, { message: "movieID must be a positive integer" });
   }
+
+  const actorParam = event.queryStringParameters?.actor;
+  const actorId = parseId(actorParam);
+  if (actorParam !== undefined && actorId === undefined) {
+    return response(400, { message: "actor must be a positive int" });
+  }
+
   try {
+    if (actorId !== undefined) {
+      const roleResult = await ddb.send(
+        new GetCommand({
+          TableName: tableName,
+          Key: { PK: movieKey(movieId), SK: actorKey(actorId) },
+        })
+      );
+      return response(200, { data: roleResult.Item && toRole(roleResult.Item) });
+    }
+
     const queryResult = await ddb.send(
       new QueryCommand({
         TableName: tableName,
