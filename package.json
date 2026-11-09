@@ -15,8 +15,9 @@
     "@types/node": "^24.10.1",
     "aws-cdk": "2.1141.0",
     "jest": "^30",
+    "ts-node": "^10.9.2",
     "tsx": "^4.23.0",
-    "typescript": "~7.0.2"
+    "typescript": "^5.7.3"
   },
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.1146.0",
@@ -26,5 +27,20 @@
     "aws-cdk-lib": "^2.268.0",
     "aws-jwt-verify": "^5.2.1",
     "constructs": "^10.5.0"
-  }
+  },
+  "description": "This repository contains an implementation of the serverless web API specified below, and the CDK code to provision its infrastructure for the AWS cloud. However, it is incomplete as there are bugs and missing features.",
+  "main": "jest.config.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ConanQuilty/chq-cad-assignment-26.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ConanQuilty/chq-cad-assignment-26/issues"
+  },
+  "homepage": "https://github.com/ConanQuilty/chq-cad-assignment-26#readme"
 }
