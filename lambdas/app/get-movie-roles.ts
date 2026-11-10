@@ -8,6 +8,7 @@ import {
   tableName,
   toRole,
   actorKey, 
+  isMovieItem,
 } from "../shared/db";
 import { response } from "../shared/http";
 import { logRequest } from "../shared/request-logger";
@@ -36,7 +37,12 @@ export const handler = async (
           Key: { PK: movieKey(movieId), SK: actorKey(actorId) },
         })
       );
-      return response(200, { data: roleResult.Item && toRole(roleResult.Item) });
+      if (!roleResult.Item) {
+        return response(404, {
+          message: `Actor ${actorId} has no role in movie ${movieId}`,
+        });
+      }
+      return response(200, { data: toRole(roleResult.Item) });
     }
 
     const queryResult = await ddb.send(
@@ -49,7 +55,14 @@ export const handler = async (
     );
 
     const resultItems = queryResult.Items ?? [];
+
+    const movieItems = resultItems.filter(isMovieItem);
+    if (movieItems.length === 0) {
+      return response(404, { message: `Movie ${movieId} not found` });
+    }
+
     return response(200, { data: resultItems.filter(isRoleItem).map(toRole) });
+  
   } catch (err) {
     console.error("DynamoDB error:", err);
     return response(500, {
