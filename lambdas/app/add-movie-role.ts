@@ -3,10 +3,13 @@ import { TransactWriteCommand } from "@aws-sdk/lib-dynamodb";
 import { actorKey, ddb, movieKey, type Role, tableName, parseId, itemExists } from "../shared/db";
 import { isResponse, parseJsonObject, response, serverError } from "../shared/http";
 import { TransactionCanceledException } from "@aws-sdk/client-dynamodb";
+import { logRequest } from "../shared/request-logger";
 
 export const handler = async (
   event: APIGatewayProxyEvent
 ): Promise<APIGatewayProxyResult> => {
+  logRequest(event);
+  
   const body = parseJsonObject(event);
   if (isResponse(body)) return body;
 
