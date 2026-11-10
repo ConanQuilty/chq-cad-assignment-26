@@ -27,3 +27,9 @@ export const parseJsonObject = (
   }
   return body as Record<string, unknown>;
 };
+
+//Logs errors to cloudwatch instead of giving too much info to user
+export const serverError = (err: unknown): APIGatewayProxyResult => {
+  console.error('Unexpected error:', err);
+  return response(500, { message: 'Internal server error' });
+};
