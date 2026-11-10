@@ -51,6 +51,12 @@ export const handler = async (
       })
     );
 
+    if (!roleResult.Item) {
+      return response(404, {
+        message: `Actor ${actorId} has no role in movie ${movieId}`,
+      });
+    }
+
     const { roleDescription } = toRole(roleResult.Item ?? {});
 
     return response(200, { data: { ...actor, roleDescription} });
